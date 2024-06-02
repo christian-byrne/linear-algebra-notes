@@ -75,6 +75,17 @@ class Matrix:
             for m in range(len(self.vectors[0]))
         )
 
+    def __mul__(
+        self, other: Union[List[Vector], List[List[int]], int, float]
+    ) -> "Matrix":
+        if isinstance(other, (int, float, complex)):
+            return Matrix(
+                [[component * other for component in vec] for vec in self.vectors]
+            )
+        # TODO: Matrix multiplication
+        if isinstance(other, self.__class__):
+            pass
+
     def __add__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
         if isinstance(other, list):
             return Matrix(self.vectors + other)
@@ -86,8 +97,8 @@ class Matrix:
             # Element-wise addition
             return Matrix(
                 [
-                    self_vec + other_vec
-                    for self_vec, other_vec in zip(self.vectors, other.vectors)
+                    self_vec + other
+                    for self_vec in self.vectors
                 ]
             )
 
@@ -111,8 +122,12 @@ class Matrix:
             )
         elif isinstance(other, (float, int, complex)):
             # Element-wise subtraction
-            for i in range(len(self.vectors)):
-                self.vectors[i] = self.vectors[i] + other
+            return Matrix(
+                [
+                    self_vec - other
+                    for self_vec in self.vectors
+                ]
+            )
 
     def sum(self) -> Vector:
         """Sum all the vectors in the matrix and return the sum as a `Vector`"""
@@ -121,6 +136,12 @@ class Matrix:
             result = result + vec
 
         return result
+    
+    def __eq__(self, other: "Matrix"):
+        for self_vec, other_vec in zip(self.vectors, other.vectors):
+            if self_vec != other_vec:
+                return False
+        return True
 
     def __len__(self) -> int:
         return len(self.vectors)
