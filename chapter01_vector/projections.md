@@ -61,7 +61,7 @@
 - $\text{proj}_d v = \frac{d \cdot v}{d \cdot d}d = \frac{[-1, 1, 0] \cdot [-2, -1, 1]}{[-1, 1, 0] \cdot [-1, 1, 0]}[-1, 1, 0] = \frac{2 + -1 + 0}{1 + 1 + 0}[-1, 1, 0] = \frac{1}{2}[-1, 1, 0] = [-\frac{1}{2}, \frac{1}{2}, 0]$
 - $\overrightarrow{PB} = v - \text{proj}_d v = [-2, -1, 1] - [-\frac{1}{2}, \frac{1}{2}, 0] = [-\frac{3}{2}, -\frac{3}{2}, 1]$
 - The distance from $B$ to $l$ is the distance of this vector result, which can be calculated by taking the square root of the sum of the squares of the components of the vector
-  - I.e., $||\overrightarrow{PB}|| = \sqrt{(-\frac{3}{2})^2 + (-\frac{3}{2})^2 + 1^2} = \sqrt{\frac{9}{4} + \frac{9}{4} + 1} = \sqrt{\frac{9}{4} + \frac{9}{4} + \frac{4}{4}} = \sqrt{\frac{22}{4}} = \sqrt{\frac{11}{2}} = \frac{\sqrt{11}}{\sqrt{2}} = \frac{\sqrt{11}}{2}$
+  - I.e., $||\overrightarrow{PB}|| = \sqrt{(-\frac{3}{2})^2 + (-\frac{3}{2})^2 + 1^2} = \sqrt{\frac{9}{4} + \frac{9}{4} + 1} = \sqrt{\frac{9}{4} + \frac{9}{4} + \frac{4}{4}} = \sqrt{\frac{22}{4}} = \sqrt{\frac{11}{2}} = \frac{\sqrt{11}}{\sqrt{2}}$
 
 
 

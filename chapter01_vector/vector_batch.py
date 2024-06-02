@@ -51,7 +51,7 @@ class VectorBatch:
 
     def __str__(self):
         return f"{[vec.coordinates for vec in self.vectors]}"
-    
+
     def __repr__(self):
         return f"VectorBatch({[vec.coordinates for vec in self.vectors]})"
 
@@ -59,7 +59,7 @@ class VectorBatch:
         if title:
             print(
                 Panel(
-                    f"[bold]Vector Batch - {title}[/bold]",
+                    f"[bold]Vector Batch - {title}[/bold]".replace("->", "→"),
                     style="green",
                     expand=False,
                     border_style="dim white",
