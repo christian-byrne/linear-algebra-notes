@@ -1,12 +1,12 @@
 from chapter01_vector.vector_class import Vector
-from chapter01_vector.matrix_class import Matrix
+from chapter03_matrix.matrix_class import Matrix
 from chapter05_orthogonality.graham_schmidt_orthogonality import GrahamSchmidt
 
-from typing import List
+from typing import List, Union
 
 
 class LeastSquaresSolution:
-    def __init__(self, vectors: List[Vector], constant_vector: Vector):
+    def __init__(self, vectors: Union[Matrix, List[Vector]], constant_vector: Vector):
         self.constant_vector = constant_vector
         constant_vector.print("Constant")
 
