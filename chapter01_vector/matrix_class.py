@@ -36,11 +36,7 @@ class Matrix:
 
         return result
 
-
-
-    def __add__(
-        self, other: Union[List[Vector], "Matrix", Vector]
-    ) -> "Matrix":
+    def __add__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
         if isinstance(other, list):
             return Matrix(self.vectors + other)
         elif isinstance(other, Vector):
@@ -49,9 +45,35 @@ class Matrix:
             return Matrix(self.vectors + other.vectors)
         elif isinstance(other, (float, int, complex)):
             # Element-wise addition
+            return Matrix(
+                [
+                    self_vec + other_vec
+                    for self_vec, other_vec in zip(self.vectors, other.vectors)
+                ]
+            )
+
+    def __sub__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
+        if isinstance(other, list):
+            difference = [
+                vec
+                for vec in self.vectors
+                if not any([vec == other_vec for other_vec in other])
+            ]
+            return Matrix(difference[:])
+        elif isinstance(other, Vector):
+            difference = [vec for vec in self.vectors if vec != other]
+            return Matrix(difference[:])
+        elif isinstance(other, self.__class__):
+            return Matrix(
+                [
+                    self_vec - other_vec
+                    for self_vec, other_vec in zip(self.vectors, other.vectors)
+                ]
+            )
+        elif isinstance(other, (float, int, complex)):
+            # Element-wise subtraction
             for i in range(len(self.vectors)):
                 self.vectors[i] = self.vectors[i] + other
-            
 
     def __contains__(self, test_vector: Vector) -> bool:
         return any([vec == test_vector for vec in self.vectors])
