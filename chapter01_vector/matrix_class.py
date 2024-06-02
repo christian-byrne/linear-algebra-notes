@@ -3,11 +3,11 @@ from chapter01_vector.vector_class import Vector
 from rich.panel import Panel
 from rich.table import Table
 from rich import print
-from typing import List
+from typing import List, Union
 
 
-class VectorBatch:
-    """Class for creating and managing a batch of Vector instances"""
+class Matrix:
+    """Matrix-like collection of Vectors."""
 
     def __init__(self, array_2d: List[List[int]] = []):
         self.vectors = [Vector(array) for array in array_2d]
@@ -15,8 +15,8 @@ class VectorBatch:
     def dim(self) -> int:
         return max([vector.size for vector in self.vectors])
 
-    def append(self, new_vector: Vector) -> "VectorBatch":
-        """Add a new vector to the batch. If it is an array it will be converted
+    def append(self, new_vector: Vector) -> "Matrix":
+        """Add a new vector to the matrix. If it is an array it will be converted
         to a `Vector` automatically"""
         if not isinstance(new_vector, Vector):
             new_vector = Vector(new_vector)
@@ -24,21 +24,34 @@ class VectorBatch:
         self.vectors.append(new_vector)
         return self
 
-    def clear(self) -> "VectorBatch":
+    def clear(self) -> "Matrix":
         self.vectors = []
         return self
 
     def sum(self) -> Vector:
-        """Sum all the vectors in the batch and return the sum as a `Vector`"""
+        """Sum all the vectors in the matrix and return the sum as a `Vector`"""
         result = Vector([0 for _ in range(self.dim())])
         for vec in self.vectors:
             result = result + vec
 
         return result
 
-    def __add__(self, other) -> "VectorBatch":
-        new_vecs = self.vectors + other
-        return VectorBatch(new_vecs)
+
+
+    def __add__(
+        self, other: Union[List[Vector], "Matrix", Vector]
+    ) -> "Matrix":
+        if isinstance(other, list):
+            return Matrix(self.vectors + other)
+        elif isinstance(other, Vector):
+            return Matrix(self.vectors).append(other)
+        elif isinstance(other, self.__class__):
+            return Matrix(self.vectors + other.vectors)
+        elif isinstance(other, (float, int, complex)):
+            # Element-wise addition
+            for i in range(len(self.vectors)):
+                self.vectors[i] = self.vectors[i] + other
+            
 
     def __contains__(self, test_vector: Vector) -> bool:
         return any([vec == test_vector for vec in self.vectors])

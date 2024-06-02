@@ -4,17 +4,17 @@ from rich.panel import Panel
 from rich import print
 
 from chapter01_vector.vector_class import Vector
-from chapter01_vector.vector_batch import VectorBatch
+from chapter01_vector.vector_batch import Matrix
 
 
 class GrahamSchmidt:
     def __init__(self, vectors: List[Vector]):
-        if isinstance(vectors, VectorBatch):
+        if isinstance(vectors, Matrix):
             self.vectors = vectors.vectors
         else:
             self.vectors = vectors
 
-        self.orthogonal_vectors = VectorBatch()
+        self.orthogonal_vectors = Matrix()
         self.state = ""
 
     def reset(self):

@@ -1,5 +1,5 @@
 from chapter01_vector.vector_class import Vector
-from chapter01_vector.vector_batch import VectorBatch
+from chapter01_vector.vector_batch import Matrix
 from chapter05_orthogonality.graham_schmidt_orthogonality import GrahamSchmidt
 
 from typing import List
@@ -10,7 +10,7 @@ class LeastSquaresSolution:
         self.constant_vector = constant_vector
         constant_vector.print("Constant")
 
-        self.vectors = VectorBatch(vectors)
+        self.vectors = Matrix(vectors)
         self.vectors.print("Dependent")
 
         self.size = len(vectors)
@@ -26,13 +26,13 @@ class LeastSquaresSolution:
         # Step 2: Find an orthogonal basis for the column space.
         gs = GrahamSchmidt(self.vectors)
         orthogonals: List[Vector] = gs.orthogonalize().orthogonal_vectors
-        VectorBatch(orthogonals).print("After Orthogonalizing")
+        Matrix(orthogonals).print("After Orthogonalizing")
 
         # Step 3: Project the constant vector onto the column space
         # I.e., apply the projectiong of each vector in the orthogonal set
         # onto the constant vector.
         # NOTE: We are projecting the CONSTANT -> ONTO -> SPACE
-        projected_vectors = VectorBatch(
+        projected_vectors = Matrix(
             [self.constant_vector.project(vec) for vec in orthogonals]
         )
         projected_vectors.print("After Projecting Constant Vector onto Orthogonals")
@@ -42,7 +42,7 @@ class LeastSquaresSolution:
 
         # Step 5: Construct the least-squares solution which will consist of the
         # original vectors and the projected constant vector.
-        return VectorBatch(self.vectors + [projected_constant_vector])
+        return Matrix(self.vectors + [projected_constant_vector])
 
 
 def example_from_playposit():

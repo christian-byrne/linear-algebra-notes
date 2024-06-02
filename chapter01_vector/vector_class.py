@@ -45,6 +45,40 @@ class Vector:
     def __getitem__(self, index):
         return self.coordinates[index]
 
+    def normal_vector(self) -> "Vector":
+        """
+        Consider the line $l$ with equation $2x + y = 0$.
+        The left-hand side of the equation can be seen as a dot product.
+        I.e., $2x + y = [2, 1] \cdot [x, y]$.
+        Then the equation becomes $n \cdot x = 0$, where $n = [2, 1]$.
+
+        The vector $n$ is perpendicular to the line $l$ (since it describes a
+        vector that goes from a point to 2 units to the right and 1 unit up -
+        i.e., perpindicular to the slope of the line).
+        In fact, it should be *orthogonal* to any vector that is parallel to
+        the line $l$.
+
+        Thus, if you take any point on the line $l$, $x$, and another point $p$,
+        then the vector $\overrightarrow{px}$ is parallel to the line $l$ and
+        equal to $x - p$.
+        Thus, $n \cdot (x - p) = 0$.
+
+        This vector $n$ is called the *normal vector* to the line $l$.
+        The equation $n \cdot x = 0$ is called the *normal form* of the equation of
+        the line $l$
+
+        Returns:
+            Vector: A normal vector to self.
+        """
+        if len(self.coordinates) != 2:
+            raise ValueError(
+                "Normal vector calculation is only supported for 2D vectors."
+            )
+
+        # Swap the components and negate one of them
+        x, y = self.coordinates
+        return Vector([-y, x])
+
     def direction(self) -> "Vector":
         """
         The direction vector of a vector is simply a unit vector (a vector
@@ -55,8 +89,8 @@ class Vector:
             u = (a/||v||, b/||v||, c/||v||)
 
         Process:
-            1. Calculate the magnitude (length) of the `self`.
-                ||`self`|| = √(a² + b² + c²)
+            1. Calculate the magnitude (length) of `self`.
+                ||`self`|| = √(a² + b² + c²), where a, b, c are components.
             2. Divide each component of `self` by magnitude.
 
         Returns:
@@ -80,7 +114,7 @@ class Vector:
             To translate this to a class method, instead of giving the point_a as (3, 1, 1),
             we should define this vector as [-1, 1, 0] through the point
             [3, 1, 2] - [1 * -1, 0 * 1, 2 * 0].
-            I.e., point_a - vector through point_b with direction [-1, 1, 0]
+            I.e., point_a - vector through point_b with direction [-1, 1, 0].
 
         Args:
             point_b: An isolated point.
@@ -95,9 +129,10 @@ class Vector:
             2. Find the `direction_vector` of `self`.
             2. Project `vector_self_to_b` onto our `direction_vector`.
             3. The difference between that projection and `vector_self_to_b` is the
-                the length from the closest point on line_l to point_b.
+                the vector from the closest point on line_l to point_b.
                 It is the vector orthogonal to the projection of `vector_self_to_b`
                 onto `direction_vector`.
+            4. Return the length of that difference.
 
         """
         vector_origin_to_b = Vector(list(point_b))
@@ -115,7 +150,7 @@ class Vector:
         distance_vector: Vector = vector_self_to_b - vector_self_to_p
         distance = distance_vector.norm()
         print(
-            f"Length of the vector from P to point_b, where P is the point on Self that is closest to point_b:\n{distance}"
+            f"Length of the vector from P to point_b, where P is the point on self that is closest to point_b:\n{distance}"
         )
 
         return distance
@@ -312,7 +347,7 @@ class Vector:
             other_coords = other.coordinates
         return self.coordinates == other_coords
 
-    def __add__(self, other: "Vector") -> "Vector":
+    def __add__(self, other: Union["Vector", float, int, complex]) -> "Vector":
         """
         The sum of two vectors $\overrightarrow{v}$ and $\overrightarrow{w}$ is
         the vector that results from placing the initial point of
@@ -325,12 +360,15 @@ class Vector:
             ![Picture](pictures/parallelogram-rule.png)
 
         """
-        return Vector(
-            [
-                coord1 + coord2
-                for coord1, coord2 in zip(self.coordinates, other.coordinates)
-            ]
-        )
+        if isinstance(other, self.__class__):
+            return Vector(
+                [
+                    coord1 + coord2
+                    for coord1, coord2 in zip(self.coordinates, other.coordinates)
+                ]
+            )
+        else:
+            return Vector([coord + other for coord in self.coordinates])
 
     def __sub__(self, other: "Vector") -> "Vector":
         """
