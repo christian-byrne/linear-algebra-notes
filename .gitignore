@@ -1,0 +1,67 @@
+# Matlab Workspaces
+#**/*.mlx
+
+.python-version
+todo.md
+
+
+**/temp.*
+**/*.bak       
+**/*.swp       
+**/*~          
+
+# Ignore build files
+**/build/
+**/dist/
+**/target/
+**/out/
+**/__pycache__/
+**/.next/
+**/.pytest_cache/
+
+# Ignore workspace/IDE files
+**/.vscode/
+**/.idea/
+**/.vs/
+**/.suo
+**/.ntvs_analysis.dat
+**/.ntvs_test_results.dat
+**/.mypy_cache/
+
+# Ignore secrets and passwords
+**/.secrets
+**/.secrets.*
+**/secrets.*
+**/secrets
+**/*.key      
+**/*.pem      
+**/*.crt      
+**/*.cer      
+
+# Ignore environment variables
+**/.env
+**/.env.*
+**/env.*
+.ENV
+
+# Ignore compressed files
+**/*.7z
+**/*.dmg
+**/*.gz
+**/*.iso
+# **/*.jar
+**/*.rar
+**/*.tar
+
+# Ignore compiled binaries
+**/*.o       
+**/*.a       
+**/*.so      
+**/*.dll     
+**/*.exe     
+**/*.bin     
+**/*.img     
+**/*.iso     
+**/*.apk     
+**/*.app     
+**/*.ipa     
