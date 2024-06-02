@@ -3,6 +3,7 @@ from chapter01_vector.vector_class import Vector
 from chapter03_matrix.matrix_class import Matrix
 from typing import Tuple, Union, List, Any
 from rich import console, print
+import numpy as np
 
 
 def random_matrix(shape: Tuple[int, ...] = None):
@@ -90,7 +91,9 @@ def is_linear_transformation(
 
         # Step 1: Test homoegeneity.
         scalar = random.randint(0, 32)
-        if not is_homogenous_transformation(function, scalar, test_target, print_all_tests):
+        if not is_homogenous_transformation(
+            function, scalar, test_target, print_all_tests
+        ):
             print(f"Failed on homogeneity test # {i}\nwhile comparing {a} with {b}\n")
             return failure_msg
 
@@ -98,30 +101,43 @@ def is_linear_transformation(
         if not is_additive_transformation(function, test_target, print_all_tests):
             print(f"Failed on additivity test # {i}\nwith {test_target}\n")
             return failure_msg
-    
+
     return success_msg
 
 
 def webassign_problem_4():
-    # T: R^2 -> R^2
-    # maps [[4, 3], [1, -1]] to [[0, -1], [0, 3]]
-    # {[4, 3], [0, -1]} form a basis for R^2
-    #
-    # Find T([1, 0])
-    #
-    # Write [1, 0] as a linear combination of the basis elements.
-    # 4a = 1 -> a = 1/4
-    # 3a - b = 0 -> b = 3/4
-    # [1, 0] ~ [1/4 [4, 3], 3/4 [0, -1]]
-    #
-    # Since T is a linear transformation, property:
-    # T(1/4 [4, 3] + 3/4 [1, -1]) = T(1/4 [4, 3]) + T(4/3 [1, -1])
-    #
-    # T([4, 3]) = [1, -1] -> T(1/4 [4, 3]) = 1/4 T([4, 3]) = 1/4 [1, -1] = [1/4, -1/4]
-    # T([0, -1]) = [0, 3] -> T(3/4 [0, -1]) = 3/4 T([0, -1]) = 3/4 [0, 3] = [0, 9/4]
-    #
-    #
-    pass
+    """
+    T: R^2 -> R^2
+    maps [[4, 3], [1, -1]] to [[0, -1], [0, 3]]
+    {[4, 3], [0, -1]} forms a basis for R^2
+
+    Find T([1, 0])
+
+    Write [1, 0] as a linear combination of the basis elements.
+    4a = 1 -> a = 1/4
+    3a - b = 0 -> b = 3/4
+    [1, 0] ~ [1/4 [4, 3], 3/4 [0, -1]]
+
+    Since T is a linear transformation, it is additive, thus:
+    T(1/4 [4, 3] + 3/4 [1, -1]) = T(1/4 [4, 3]) + T(3/4 [1, -1])
+
+    Since T is a linear transformation, it is homogenous, thus:
+    T(1/4 [4, 3]) + T(3/4 [1, -1]) = 1/4 T([4, 3]) + 3/4 T([1, -1]) =
+    1/4 [1, -1] + 3/4 [0, 3] = [1/4, -1/4] + [0, 9/4] = [1/4, 8/4]
+    """
+
+    def T(matrix: Matrix):
+        # Since we don't know the rules of T exactly, this simulates linearity.
+        if matrix.vectors[0] == Vector([4, 3]):
+            return Matrix([1, -1])
+        else:
+            return Matrix([0, 3])
+
+    coefficients = np.stack([np.array([4, 3]), np.array([0, -1])], axis=1)
+    constants = np.array([1, 0])
+    solution = np.linalg.solve(coefficients, constants)
+
+    linear_combination = [(solution[0], Vector([4, 3])), (solution[1], Vector([0, -1]))]
 
 
 def playposit_example_1():
