@@ -28,13 +28,12 @@ class Matrix:
         self.vectors = []
         return self
 
-    def sum(self) -> Vector:
-        """Sum all the vectors in the matrix and return the sum as a `Vector`"""
-        result = Vector([0 for _ in range(self.dim())])
-        for vec in self.vectors:
-            result = result + vec
-
-        return result
+    def transpose(self) -> "Matrix":
+        return Matrix(
+            [
+                self.vectors[j][m] for j in range(len(self.vectors))
+            ] for m in range(len(self.vectors[0]))
+        )
 
     def __add__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
         if isinstance(other, list):
@@ -74,6 +73,14 @@ class Matrix:
             # Element-wise subtraction
             for i in range(len(self.vectors)):
                 self.vectors[i] = self.vectors[i] + other
+    
+    def sum(self) -> Vector:
+        """Sum all the vectors in the matrix and return the sum as a `Vector`"""
+        result = Vector([0 for _ in range(self.dim())])
+        for vec in self.vectors:
+            result = result + vec
+
+        return result
 
     def __contains__(self, test_vector: Vector) -> bool:
         return any([vec == test_vector for vec in self.vectors])
@@ -88,7 +95,7 @@ class Matrix:
         return f"{[vec.coordinates for vec in self.vectors]}"
 
     def __repr__(self):
-        return f"VectorBatch({[vec.coordinates for vec in self.vectors]})"
+        return f"Matrix({[vec.coordinates for vec in self.vectors]})"
 
     def print(self, title: str = "") -> str:
         if title:

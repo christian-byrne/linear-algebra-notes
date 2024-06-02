@@ -4,7 +4,7 @@ from rich.panel import Panel
 from rich import print
 
 from chapter01_vector.vector_class import Vector
-from chapter01_vector.vector_batch import Matrix
+from chapter01_vector.matrix_class import Matrix
 
 
 class GrahamSchmidt:

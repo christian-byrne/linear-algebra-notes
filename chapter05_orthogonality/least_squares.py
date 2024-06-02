@@ -1,5 +1,5 @@
 from chapter01_vector.vector_class import Vector
-from chapter01_vector.vector_batch import Matrix
+from chapter01_vector.matrix_class import Matrix
 from chapter05_orthogonality.graham_schmidt_orthogonality import GrahamSchmidt
 
 from typing import List
