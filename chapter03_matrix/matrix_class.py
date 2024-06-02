@@ -26,26 +26,35 @@ class Matrix:
         else:
             raise TypeError("Invalid type for Matrix initialization")
 
-        self.shape = self.compute_shape(self.vectors)
-
     def compute_shape(self, vectors: Union[List, Tuple]) -> Tuple[int, ...]:
+        vectors = vectors[:]
         shape = []
-        while isinstance(vectors, list):
-            shape.append(len(vectors))
-            vectors = vectors[0] if len(vectors) > 0 else []
+        while isinstance(vectors, (list, Vector, self.__class__)):
+            if isinstance(vectors, Vector):
+                shape.append(vectors.size)
+                break
+            elif isinstance(vectors, self.__class__):
+                shape.append(len(vectors))
+                vectors = vectors.vectors
+            elif isinstance(vectors, list):
+                shape.append(len(vectors))
+                vectors = vectors[0] if len(vectors) > 0 else []
+            else:
+                shape.append(1)
+                break
         return tuple(shape)
 
     def dims(self) -> Tuple[int, ...]:
-        return self.shape
+        return self.compute_shape(self.vectors)[0]
+
+    def shape(self) -> Tuple[int, ...]:
+        return self.compute_shape(self.vectors)
 
     def size(self, index: int) -> int:
         if isinstance(self.vectors, list):
             return len(self.vectors[index])
         else:
             raise TypeError("Scalar has no size property")
-
-    def shape(self) -> Tuple[int, ...]:
-        return self.dims()
 
     def append(self, new_vector: Vector) -> "Matrix":
         """Add a new vector to the matrix. If it is an array it will be converted
@@ -107,11 +116,14 @@ class Matrix:
 
     def sum(self) -> Vector:
         """Sum all the vectors in the matrix and return the sum as a `Vector`"""
-        result = Vector([0 for _ in range(self.dims())])
+        result = Vector([0 for _ in range(self.shape()[1])])
         for vec in self.vectors:
             result = result + vec
 
         return result
+
+    def __len__(self) -> int:
+        return len(self.vectors)
 
     def __contains__(self, test_vector: Vector) -> bool:
         return any([vec == test_vector for vec in self.vectors])
@@ -132,21 +144,21 @@ class Matrix:
         if title:
             print(
                 Panel(
-                    f"[bold]Vector Batch - {title}[/bold]".replace("->", "→"),
+                    f"[bold]Matrix - {title}[/bold]".replace("->", "→"),
                     style="green",
                     expand=False,
                     border_style="dim white",
                 )
             )
         tb = Table(style="dim cyan", show_header=False)
-
-        rows = self.vectors[0].size
-
-        for i in range(len(self.vectors)):
-            tb.add_column()
+        rows = self.shape()[0]
+        cols = self.shape()[1]
 
         for i in range(rows):
-            tb.add_row(*[f"{v.coordinates[i]:.2f}" for v in self.vectors])
+            tb.add_column()
+
+        for i in range(cols):
+            tb.add_row(*[f"{self.vectors[v].coordinates[i]:.2f}" for v in range(rows)])
 
         print(tb)
         return self

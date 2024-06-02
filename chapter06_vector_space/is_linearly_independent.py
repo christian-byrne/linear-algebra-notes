@@ -1,5 +1,6 @@
-from chapter05_orthogonality.graham_schmidt_orthogonality import GrahamSchmidt
 from chapter01_vector.vector_class import Vector
+from chapter03_matrix.matrix_class import Matrix
+from chapter05_orthogonality.gram_schmidt_orthogonality import GramSchmidt
 
 from typing import List
 
@@ -17,7 +18,7 @@ class LinearDependenceTest:
         """
         permuations = self.__get_vector_pair_permutations()
         for pair in permuations:
-            gs = GrahamSchmidt(pair)
+            gs = GramSchmidt(pair)
             orthogonalized: List[Vector] = gs.orthogonalize().orthogonal_vectors
             if any([v.is_zero_vector() for v in orthogonalized]):
                 return True, "Linearly dependent set"

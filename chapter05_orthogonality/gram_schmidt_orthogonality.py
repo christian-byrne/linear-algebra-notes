@@ -7,8 +7,10 @@ from chapter01_vector.vector_class import Vector
 from chapter03_matrix.matrix_class import Matrix
 
 
-class GrahamSchmidt:
-    def __init__(self, vectors: List[Vector]):
+class GramSchmidt:
+    def __init__(self, vectors: List[Vector], verbose: bool = False):
+        self.verbose = verbose
+
         if isinstance(vectors, Matrix):
             self.vectors = vectors.vectors
         else:
@@ -21,7 +23,7 @@ class GrahamSchmidt:
         self.orthonormal_vectors = self.vectors[:]
         return self
 
-    def orthogonalize(self) -> "GrahamSchmidt":
+    def orthogonalize(self) -> "GramSchmidt":
         if self.state == "orthogonal":
             return self
 
@@ -37,19 +39,21 @@ class GrahamSchmidt:
                 assert isinstance(orthogonal_vector, Vector)
 
                 if orthogonal_vector.norm() == 0:
-                    print(
-                        f"Norm of orthogonal vector {orthogonal_vector.coordinates} is 0. Skipping"
-                    )
+                    if self.verbose:
+                        print(
+                            f"Norm of orthogonal vector {orthogonal_vector.coordinates} is 0. Skipping"
+                        )
                     continue
 
-                orthogonal_vector.print("Created Orthogonal Vector")
+                if self.verbose:
+                    orthogonal_vector.print("Created Orthogonal Vector")
                 if orthogonal_vector not in self.orthogonal_vectors:
                     self.orthogonal_vectors.append(orthogonal_vector)
 
         self.state = "orthogonal"
         return self
 
-    def orthnormalize(self) -> "GrahamSchmidt":
+    def orthnormalize(self) -> "GramSchmidt":
         if self.state != "orthogonal":
             self.orthogonalize()
         if self.state == "orthonormal":
