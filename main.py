@@ -18,5 +18,6 @@ z = Vector([1, 0, 1])
 u = Vector([2**(1/2), 1, -1])
 v = Vector([0, 2, -2])
 
+m = Matrix([x, y, z, u, v])
 
 example_from_playposit()
