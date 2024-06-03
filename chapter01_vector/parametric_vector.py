@@ -21,7 +21,7 @@ class ParametricVector(Vector):
 
     def __call__(self) -> Vector:
         """Return the vector scaled by the scalar/coefficient."""
-        return self.scalar * self.vector
+        return self.__mul__(self.scalar)
 
     def set_scalar(self, scalar: Union[float, int, complex]):
         self.scalar = scalar
@@ -30,4 +30,4 @@ class ParametricVector(Vector):
         return self.scalar
 
     def get_vector(self):
-        return self.vector
+        return self.coordinates

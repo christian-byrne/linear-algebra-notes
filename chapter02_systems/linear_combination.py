@@ -7,13 +7,13 @@ from typing import Union, List, Tuple, Any
 class LinearCombination:
     """Class to represent a linear combination of vectors.
     It stores a list of ParametricVector objects whose coefficients can
-    be changed. 
-        
-		The current evaluated value of the linear combination can
+    be changed.
+
+    The current evaluated value of the linear combination can
     be accessed without having to alter the class's state.
-    
+
     Args:
-				terms (List[ParametricVector]): List of ParametricVector objects.
+        terms (List[ParametricVector]): List of ParametricVector objects.
 
     """
 
@@ -21,4 +21,7 @@ class LinearCombination:
         self.terms = terms
 
     def __call__(self) -> Vector:
-        return sum([term() for term in self.terms])
+        result = Vector([0 for _ in range(self.terms[0].size)])
+        for term in self.terms:
+            result += term()
+        return result

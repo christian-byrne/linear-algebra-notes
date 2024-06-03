@@ -26,6 +26,66 @@ class Matrix:
         else:
             raise TypeError("Invalid type for Matrix initialization")
 
+    def extract_row_or_col(self, index: int, axis: int) -> "Matrix":
+        """
+        Multiplication of a matrix by a standard unit vector can "pick out" or "reproduce"
+        a column or row of the matrix.
+
+        Consider a 2x3 matrix $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$
+
+        Then $\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} \cdot A = \begin{bmatrix} 3 \\ 6 \end{bmatrix}$
+
+        If extracting a row, the axis is 0 and the formula is `self` * `extractor`.
+        Whereas if extracting a column, the axis is 1 and the formula is `extractor` * `self`.
+        
+        """
+        extractor: self.__class__ = self.get_extractor_multiple(index, axis)
+        if axis == 0:
+            return self * extractor
+        elif axis == 1:
+            return extractor * self
+
+    def get_extractor_multiple(self, index: int, axis: int) -> "Matrix":
+        print(self.shape())
+        if axis == 1:
+            extractor_matrix = Matrix(
+                [Vector([1 if i == index else 0]) for i in range(self.shape()[1])]
+            )
+        elif axis == 0:
+            extractor_matrix = Matrix(
+                [Vector([1 if i == index else 0 for i in range(self.shape()[0])])]
+            )
+
+        return extractor_matrix
+
+    def is_generalized_inverse_relative_to(self, other: "Matrix") -> bool:
+        original = Matrix(self.vectors[:])
+
+        return original * other * original == original
+
+    def is_psuedo_inverse(self) -> bool:
+        pass
+
+    def is_commutative_with(self, other: "Matrix") -> bool:
+        """Check if the matrix is commutative with another matrix."""
+        original = Matrix(self.vectors[:])
+
+        product_lr = original * other
+        product_rl = other * original
+
+        return product_lr == product_rl
+
+    def is_identity(self) -> bool:
+        """Check if the matrix is an identity matrix."""
+        if len(self.vectors) != len(self.vectors[0]):
+            return False
+        for i, vec in enumerate(self.vectors):
+            if vec[i] != 1:
+                return False
+            if any([vec[j] != 0 for j in range(len(vec)) if j != i]):
+                return False
+        return True
+
     def compute_shape(self, vectors: Union[List, Tuple]) -> Tuple[int, ...]:
         vectors = vectors[:]
         shape = []
@@ -78,13 +138,27 @@ class Matrix:
     def __mul__(
         self, other: Union[List[Vector], List[List[int]], int, float]
     ) -> "Matrix":
+        # Scalar multiplication.
         if isinstance(other, (int, float, complex)):
             return Matrix(
                 [[component * other for component in vec] for vec in self.vectors]
             )
-        # TODO: Matrix multiplication
+        # Matrix multiplication (dot product).
         if isinstance(other, self.__class__):
-            pass
+            return Matrix(
+                [
+                    [
+                        sum(
+                            [
+                                self.vectors[i][k] * other.vectors[k][j]
+                                for k in range(len(self.vectors[0]))
+                            ]
+                        )
+                        for j in range(len(other.vectors[0]))
+                    ]
+                    for i in range(len(self.vectors))
+                ]
+            )
 
     def __add__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
         if isinstance(other, list):
@@ -95,12 +169,7 @@ class Matrix:
             return Matrix(self.vectors + other.vectors)
         elif isinstance(other, (float, int, complex)):
             # Element-wise addition
-            return Matrix(
-                [
-                    self_vec + other
-                    for self_vec in self.vectors
-                ]
-            )
+            return Matrix([self_vec + other for self_vec in self.vectors])
 
     def __sub__(self, other: Union[List[Vector], "Matrix", Vector]) -> "Matrix":
         if isinstance(other, list):
@@ -122,12 +191,7 @@ class Matrix:
             )
         elif isinstance(other, (float, int, complex)):
             # Element-wise subtraction
-            return Matrix(
-                [
-                    self_vec - other
-                    for self_vec in self.vectors
-                ]
-            )
+            return Matrix([self_vec - other for self_vec in self.vectors])
 
     def sum(self) -> Vector:
         """Sum all the vectors in the matrix and return the sum as a `Vector`"""
@@ -136,7 +200,7 @@ class Matrix:
             result = result + vec
 
         return result
-    
+
     def __eq__(self, other: "Matrix"):
         for self_vec, other_vec in zip(self.vectors, other.vectors):
             if self_vec != other_vec:

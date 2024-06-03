@@ -1,5 +1,7 @@
 import random
 from chapter01_vector.vector_class import Vector
+from chapter01_vector.parametric_vector import ParametricVector
+from chapter02_systems.linear_combination import LinearCombination
 from chapter03_matrix.matrix_class import Matrix
 from typing import Tuple, Union, List, Any
 from rich import console, print
@@ -136,8 +138,28 @@ def webassign_problem_4():
     coefficients = np.stack([np.array([4, 3]), np.array([0, -1])], axis=1)
     constants = np.array([1, 0])
     solution = np.linalg.solve(coefficients, constants)
+    print(f"Solution: {solution}")
 
-    linear_combination = [(solution[0], Vector([4, 3])), (solution[1], Vector([0, -1]))]
+    expected_result = Vector([1 / 4, 2])
+    expected_result.print("Expected Result")
+
+    linear_combination_pre = LinearCombination(
+        [
+            ParametricVector(Vector([4, 3]), solution[0]),
+            ParametricVector(Vector([0, -1]), solution[1]),
+        ]
+    )
+    linear_combination_post = LinearCombination(
+        [
+            ParametricVector(Vector([1, -1]), solution[0]),
+            ParametricVector(Vector([0, 3]), solution[1]),
+        ]
+    )
+
+    output: Vector = linear_combination_post()
+    # equal = linear_combination_pre() == linear_combination_post()
+    output.print(f"Computed Result: T([1, 0]) = {output}")
+
 
 
 def playposit_example_1():
