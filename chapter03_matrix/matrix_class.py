@@ -31,13 +31,14 @@ class Matrix:
         Multiplication of a matrix by a standard unit vector can "pick out" or "reproduce"
         a column or row of the matrix.
 
-        Consider a 2x3 matrix $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$
+        Theorem:
+            Let A be an m x n matrix, e_i a standard 1 x m unit vector, and
+            e_j a standard 1 x n unit vector.
+            > e_i * A is the ith row of A
+            > A * e_j is the jth column of A.
 
-        Then $\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} \cdot A = \begin{bmatrix} 3 \\ 6 \end{bmatrix}$
+        [see example](./column_extraction_examples.py)
 
-        If extracting a row, the axis is 0 and the formula is `self` * `extractor`.
-        Whereas if extracting a column, the axis is 1 and the formula is `extractor` * `self`.
-        
         """
         extractor: self.__class__ = self.get_extractor_multiple(index, axis)
         if axis == 0:
