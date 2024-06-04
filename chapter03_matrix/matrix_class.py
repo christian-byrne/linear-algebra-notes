@@ -26,10 +26,14 @@ class Matrix:
         else:
             raise TypeError("Invalid type for Matrix initialization")
 
-    def extract_row_or_col(self, index: int, axis: int) -> "Matrix":
+    def extract_row_or_col(
+        self, index: int, axis: int, inverse: bool = False
+    ) -> "Matrix":
         """
         Multiplication of a matrix by a standard unit vector can "pick out" or "reproduce"
         a column or row of the matrix.
+
+        If `inverse`, extract all other rows or columns except the one at `index`.
 
         Theorem:
             Let A be an m x n matrix, e_i a standard 1 x m unit vector, and
@@ -40,21 +44,36 @@ class Matrix:
         [see example](./column_extraction_examples.py)
 
         """
-        extractor: self.__class__ = self.get_extractor_multiple(index, axis)
+        extractor: self.__class__ = self.get_extractor_multiple(index, axis, inverse)
+        # extractor.print(f"Extractor for {index} on axis {axis}")
         if axis == 0:
             return self * extractor
         elif axis == 1:
             return extractor * self
 
-    def get_extractor_multiple(self, index: int, axis: int) -> "Matrix":
-        print(self.shape())
-        if axis == 1:
+    def get_extractor_multiple(
+        self, index: int, axis: int, inverse: bool = False
+    ) -> "Matrix":
+        on_val = 1 if not inverse else 0
+        off_val = 0 if not inverse else 1
+
+        if axis == 0:
             extractor_matrix = Matrix(
-                [Vector([1 if i == index else 0]) for i in range(self.shape()[1])]
+                [
+                    Vector([on_val if i == index else off_val])
+                    for i in range(self.shape()[1])
+                ]
             )
-        elif axis == 0:
+        elif axis == 1:
             extractor_matrix = Matrix(
-                [Vector([1 if i == index else 0 for i in range(self.shape()[0])])]
+                [
+                    Vector(
+                        [
+                            on_val if i == index else off_val
+                            for i in range(self.shape()[0])
+                        ]
+                    )
+                ]
             )
 
         return extractor_matrix
@@ -201,6 +220,22 @@ class Matrix:
             result = result + vec
 
         return result
+
+    def element_wise_product(self, other: "Matrix") -> "Matrix":
+        if self.shape() != other.shape():
+            raise ValueError(
+                "Matrices must have the same shape for element-wise product"
+            )
+
+        return Matrix(
+            [
+                [
+                    self_compnent * other_compnent
+                    for self_compnent, other_compnent in zip(self_vecc, other_vec)
+                ]
+                for self_vecc, other_vec in zip(self.vectors, other.vectors)
+            ]
+        )
 
     def __eq__(self, other: "Matrix"):
         for self_vec, other_vec in zip(self.vectors, other.vectors):
