@@ -40,8 +40,8 @@ u = Vector([2 ** (1 / 2), 1, -1])
 v = Vector([0, 2, -2])
 
 m = Matrix([x, y, z, u, v])
-xm = Matrix([[1, 0, 1], [0, 1, 0], [0, 0, 1]])
-ym = Matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+xm = Matrix([[1, 2, 1], [0, 1, 0], [0, 0, 1]])
+ym = Matrix([[1, 2, 3], [0, 1, 0], [0, 0, 1]])
 zmc = Matrix([[1, 2, 3], [4, 5, 6]])
 zmr = Matrix([[1, 2], [3, 4], [5, 6]])
 
@@ -50,9 +50,13 @@ rm = Matrix([[2, 3, 4], [1, 2, 3], [2, 2, 2]])
 count_sqm = Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
 
-# mask_minors(rm, 1, 1)
-x = create_mask(rm, [1], [1, 0])
-x.print("Masked Matrix")
 
-y = mask_by_indices(rm, [1], [1, 0])
+rm.print("Original Matrix")
 
+y = rm * ym
+
+y.print("Result of Multiplication")
+
+r = rm.transformation_invert * y
+
+r.print("Result of Multiplication")

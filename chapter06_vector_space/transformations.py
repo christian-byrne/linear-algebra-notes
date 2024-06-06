@@ -18,6 +18,10 @@ def random_matrix(shape: Tuple[int, ...] = None):
     return Matrix([[random.randint(0, 100) for _ in range(cols)] for _ in range(rows)])
 
 
+def is_square():
+    # If the transformation maps n-space to n-space, it is square.
+    pass
+
 def is_onto():
     return True
 
@@ -27,7 +31,18 @@ def is_one_to_one():
 
 
 def is_invertible():
-    return is_onto() and is_one_to_one()
+    """
+    det(A) = 0 iff 
+    the cols of A are linearly dependent iff 
+    A does not map a basis to a basis iff 
+    A is not invertible.
+
+    d(A) != 0 iff
+    the cols of A are linearly independent iff
+    A maps a basis to a basis iff
+    A is invertible.
+    """
+    return is_onto() and is_one_to_one() and is_square()
 
 
 def is_homogenous_transformation(

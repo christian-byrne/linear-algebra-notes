@@ -6,12 +6,38 @@ from rich import print
 from typing import List, Union, Tuple
 
 
+def apply_to_identity(method: callable):
+    """To create the inverse of a transformation, apply to the identity matrix every operation that
+    was applied to the original matrix. Then use the modified identity matrix to revert the
+    transformation."""
+
+    def wrapper(self: "Matrix", *args, **kwargs):
+        original_result = method(self, *args, **kwargs)
+
+        if not isinstance(original_result, Matrix):
+            return original_result
+
+        if self.transformation_invert.shape() != original_result.shape():
+            print(
+                f"Matrix shape mismatch: {self.transformation_invert.shape()} != {original_result.shape()}"
+            )
+            return original_result
+
+        identity_result = method(self.transformation_invert, *args, **kwargs)
+        self.transformation_invert = identity_result
+
+        return original_result
+
+    return wrapper
+
+
 class Matrix:
     """Matrix-like collection of Vectors."""
 
     def __init__(
         self,
         components: List[Union[List[int], List[Vector], int, float, complex]] = None,
+        original: bool = True
     ):
         if not components:
             self.vectors = []
@@ -25,6 +51,13 @@ class Matrix:
             self.vectors = [Vector([components])]
         else:
             raise TypeError("Invalid type for Matrix initialization")
+
+        self.original = original
+        if self.original:
+            self.transformation_invert = Matrix(
+                [[1 if i == j else 0 for j in range(self.shape()[1])] for i in range(self.shape()[0])],
+                original=False
+            )
 
     def extract_row_or_col(
         self, index: int, axis: int, inverse: bool = False
@@ -118,6 +151,9 @@ class Matrix:
                 vectors = vectors.vectors
             elif isinstance(vectors, list):
                 shape.append(len(vectors))
+                if isinstance(vectors[0], (int, float, complex)):
+                    shape.append(len(vectors[0]))
+                    break
                 vectors = vectors[0] if len(vectors) > 0 else []
             else:
                 shape.append(1)
@@ -155,6 +191,7 @@ class Matrix:
             for m in range(len(self.vectors[0]))
         )
 
+    @apply_to_identity
     def __mul__(
         self, other: Union[List[Vector], List[List[int]], int, float]
     ) -> "Matrix":

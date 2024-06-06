@@ -42,7 +42,7 @@ def create_mask(
 
 def mask_minors(matrix: Matrix, cleave_row=0, cleave_col=0):
     """This is a way to isolate partitions via masking by setting every value outside
-    the partition to 0. Using the extractor method. I found this method accidentally."""
+    the partition to 0. Using the extractor method."""
     matrix.print("Original Matrix")
 
     # Get the inverse extractor for the given row
