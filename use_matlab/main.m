@@ -1,12 +1,26 @@
-
 clear;
 clc;
+format rat;
 
-test_matrix = Matrix([1, 0; 0, 1]);
 
-before = Matrix([1, 0, 0; 0, 1, 0; 0, 0, 1]');
-after = Matrix([1, 0, 0; 1, 1, 0; 1, 1, 1]');
+syms x;
 
-LinearTransformation(before, after)...
-.get_transformation_matrix()...
-.display_all_props()
+expr = x^2 - 4*x+4;
+expr_2 = x^2 - 2*x -3;
+
+r = expand(expr * expr_2)
+
+roots(r)
+
+
+A = [
+    2 0 3;
+    4 -1 4;
+    3 0 2;
+    ];
+
+
+charpoly(A)
+
+
+roots(poly(A))
