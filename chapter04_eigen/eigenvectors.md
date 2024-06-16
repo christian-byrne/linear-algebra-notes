@@ -1,0 +1,65 @@
+### Example Matrix:
+
+$A = \begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix}$
+
+### Step 1: Find Eigenvalues
+To find the eigenvalues, solve the characteristic equation $\text{det}(A - \lambda I) = 0$.
+
+$\text{det} \begin{pmatrix} 4 - \lambda & 1 \\ 2 & 3 - \lambda \end{pmatrix} = (4 - \lambda)(3 - \lambda) - 2 = \lambda^2 - 7\lambda + 10 = 0$
+
+Solve the quadratic equation $\lambda^2 - 7\lambda + 10 = 0$:
+
+$\lambda_1 = 5, \quad \lambda_2 = 2$
+
+
+### Step 2: Find Eigenvectors
+For each eigenvalue, find the corresponding eigenvector by solving $(A - \lambda I)v = 0$.
+
+#### Eigenvector for $\lambda_1 = 5$:
+
+
+$(A - 5I)v = \begin{pmatrix} -1 & 1 \\ 2 & -2 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 0$
+
+Solve 
+
+$\begin{pmatrix} -1 & 1 \\ 2 & -2 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 0$:
+
+
+$-x + y = 0 \implies y = x \quad \Rightarrow \quad v_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+
+#### Eigenvector for $\lambda_2 = 2$:
+
+
+$(A - 2I)v = \begin{pmatrix} 2 & 1 \\ 2 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 0$
+
+Solve
+
+$\begin{pmatrix} 2 & 1 \\ 2 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 0$:
+
+$2x + y = 0 \implies y = -2x \quad \Rightarrow \quad v_2 = \begin{pmatrix} 1 \\ -2 \end{pmatrix}$
+
+### Step 3: Form $D$ and $P$
+Form the diagonal matrix $D$ with the eigenvalues and the matrix $P$ with the eigenvectors as columns.
+
+$D = \begin{pmatrix} 5 & 0 \\ 0 & 2 \end{pmatrix}, \quad P = \begin{pmatrix} 1 & 1 \\ 1 & -2 \end{pmatrix}$
+
+### Step 4: Verify $P^{-1}AP = D$
+Compute $P^{-1}$ and verify the equation $P^{-1}AP = D$.
+
+1. Find $P^{-1}$:
+
+$P^{-1} = \frac{1}{\text{det}(P)} \begin{pmatrix} -2 & -1 \\ -1 & 1 \end{pmatrix} = \begin{pmatrix} \frac{2}{3} & \frac{1}{3} \\ \frac{1}{3} & -\frac{1}{3} \end{pmatrix}$
+
+
+2. Compute $P^{-1}AP$:
+
+$P^{-1}AP = \begin{pmatrix} \frac{2}{3} & \frac{1}{3} \\ \frac{1}{3} & -\frac{1}{3} \end{pmatrix} \begin{pmatrix} 4 & 1 \\ 2 & 3 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & -2 \end{pmatrix}$
+
+
+Thus, we have verified that $P^{-1}AP = D$.
+
+### Summary
+1. Find eigenvalues by solving $\text{det}(A - \lambda I) = 0$.
+2. Find eigenvectors by solving $(A - \lambda I)v = 0$ for each eigenvalue.
+3. Form $D$ from eigenvalues and $P$ from eigenvectors.
+4. Verify $P^{-1}AP = D$.
