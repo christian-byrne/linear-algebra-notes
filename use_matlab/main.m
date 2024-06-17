@@ -20,9 +20,9 @@ A = [
     ];
 
 B = [
-    6 0 0;
-    0 1 0;
-    0 0 1;
+    1 1 1;
+    0 -1 0;
+    0 0 -1;
     ];
 
 charpoly(A);
@@ -31,4 +31,53 @@ charpoly(A);
 roots(poly(A));
 
 
-[V, D] = eig(A)
+[V, D] = eig(B);
+
+C = [
+    -1/2 -1/2 1;
+    1 0 0;
+    0 1 0;
+    ];
+
+C_inv = inv(C);
+
+matrix_m = [
+    -1 0 0;
+    0 -1 0;
+    0 0 1;
+    ];
+
+my_result = C * matrix_m^2027 * C_inv;
+
+matrix_to_compute_power = [
+    1 1 1;
+    0 -1 0;
+    0 0 -1;
+    ];
+
+[mtcp_p, mtcp_d] = eig(matrix_to_compute_power);
+
+matrix_to_compute_power^2027;
+
+
+ex = [
+    -1 1 -1/2;
+    1 1 -1/2;
+    0 1 1;
+    ];
+
+inv(ex);
+
+elipse_example = [
+    sqrt(3)/2 1;
+    -1/2 sqrt(3);
+    ];
+
+[elipse_v, elipse_d] = eig(elipse_example);
+
+disp(elipse_d)
+
+elipse_d(1, 1)
+
+
+sqrt_3 = sqrt(3)
