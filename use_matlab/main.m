@@ -16,20 +16,23 @@ A = [
     -3 0;
     ];
 
-B = [
-    1 1 1;
-    0 -1 0;
-    0 0 -1;
-    ];
+A_characteristic_polynomial = charpoly(A);
+A_eigenvalues = roots(poly(A));
+[A_eigenvectors, A_diagonal] = eig(A);
 
-A_characteristic_polynomial = charpoly(A)
-A_eigenvalues = roots(poly(A))
-[A_eigenvectors, A_diagonal] = eig(A)
-
-svd(A)
+svd(A);
 
 diagonal_1_1 = A_diagonal(1, 1);
 diagonal_1_2 = A_diagonal(1, 1);
 diagonal_2_1 = A_diagonal(2, 1);
 diagonal_2_2 = A_diagonal(2, 2);
 
+
+
+-117/4
+
+factor(-1*(((-36 * 3) - 9)))
+
+sqrt(9 - 117)
+
+3 + 3*sqrt(-3)
