@@ -12,27 +12,20 @@ roots(r);
 
 
 A = [
-    0 -2;
-    -3 0;
+    0 -1;
+    1 0;
     ];
 
 A_characteristic_polynomial = charpoly(A);
-A_eigenvalues = roots(poly(A));
-[A_eigenvectors, A_diagonal] = eig(A);
+A_eigenvalues = roots(poly(A))
+[A_eigenvectors, A_diagonal] = eig(A)
 
-svd(A);
+A_svd = svd(A)
+
+A_eigenvectors * A_diagonal * inv(A_eigenvectors)
 
 diagonal_1_1 = A_diagonal(1, 1);
 diagonal_1_2 = A_diagonal(1, 1);
 diagonal_2_1 = A_diagonal(2, 1);
 diagonal_2_2 = A_diagonal(2, 2);
 
-
-
--117/4
-
-factor(-1*(((-36 * 3) - 9)))
-
-sqrt(9 - 117)
-
-3 + 3*sqrt(-3)
