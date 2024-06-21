@@ -12,11 +12,12 @@ roots(r);
 
 
 A = [
-    0 -1;
-    1 0;
+    0 0 1;
+    1 0 0;
+    0 1 0;
     ];
 
-A_characteristic_polynomial = charpoly(A);
+A_characteristic_polynomial = charpoly(A)
 A_eigenvalues = roots(poly(A))
 [A_eigenvectors, A_diagonal] = eig(A)
 
@@ -29,3 +30,13 @@ diagonal_1_2 = A_diagonal(1, 1);
 diagonal_2_1 = A_diagonal(2, 1);
 diagonal_2_2 = A_diagonal(2, 2);
 
+expr_3 = -x^3 + 1
+roots(expr_3)
+
+B = [
+    -1 1;
+    -1 -2;
+    ];
+
+inv_B = inv(B)
+inv(B) * [1, 0]'
