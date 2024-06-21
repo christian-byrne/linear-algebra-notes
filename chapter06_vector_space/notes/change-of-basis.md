@@ -10,9 +10,13 @@
 
 # Change of Basis
 
-## Process
+## Summary
 
-> To convert column vector $A$ from an $xy$ coordinate system to an $uv$ coordinate system, multiply the inverse of the matrix found by using the eigenvectors as columns by the column vector $A$.
+- Let $u$ and $v$ be the eigenvectors of a diagonalizable linear transformation $A$ that maps $\mathbb{R}^2 \rightarrow \mathbb{R}^2$.
+- Let $P = [uv]$
+- For any vector $V$ in $\mathbb{R}^2$, $\exists (v_1, v_2) \in \mathbb{R}^2$ such that $V = P \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \implies$
+  - There's a change of basis matrix from $xy$ to $uv$ described by $P^{-1}$.
+  - There's a change of basis matrix from $uv$ to $xy$ described by $P$.
 
 ## Properties
 
@@ -50,3 +54,9 @@ $\forall (A \in \mathbb{R}^{m \times n} | \text{A represents a linear transforma
   - $\begin{bmatrix} e_1 & e_2 \\ e_3 & e_4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} e_1 & e_2 \\ e_3 & e_4 \end{bmatrix} \begin{bmatrix} e_1 & e_2 \\ e_3 & e_4 \end{bmatrix}^{-1} \begin{bmatrix} V_1 \\ V_2 \end{bmatrix} \implies$
   - $\begin{bmatrix} e_1 & e_2 \\ e_3 & e_4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} V_1 \\ V_2 \end{bmatrix} \implies$
   - $\begin{bmatrix} V_1 \\ V_2 \end{bmatrix} = \begin{bmatrix} e_1 & e_2 \\ e_3 & e_4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$
+
+### Connection to Diagonalization
+
+- To write the transformation in terms of the eigenvectors of the transformation (e.g., in the $uv$ coordinate system), you can use the fact that $T = PDP^{-1} \implies P^{-1}TP = D$ (where $D$ is a diagonal matrix which will serve as the transformation matrix in the $uv$ coordinate system).
+- In other words, the transformation matrix $D$ in the $uv$ coordinate system is a diagonal matrix with the eigenvalues of the transformation on the diagonal.
+- $D$ is also found by using the eigenvalues of the transformation as the diagonal entries of the matrix (if all that information is known).
